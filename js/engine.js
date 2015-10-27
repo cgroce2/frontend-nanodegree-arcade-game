@@ -23,11 +23,19 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        resetButton = doc.createElement('button'),
+        levelObjective;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
+    resetButton.innerHTML = 'Reset';
+    doc.body.appendChild(resetButton);
+    resetButton.onclick = function() {
+        resetGame();
+    };
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -56,7 +64,27 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        if (!hasReset && !gameOver && !hasWon && !levelFinished) {
+            win.requestAnimationFrame(main);
+        }
+        if (levelFinished) {
+            whichLevel += 1;
+            initLevel();
+            levelFinished = false;
+            main();
+        }
+        if (gameOver) {
+            alert('I\'m sorry! You have lost. Please click "OK" and then Reset or ' +
+                  'simply reload your browser to play again.');
+            finalScore = score.score + 50 * lives.lives;
+            updateHighScores(finalScore);
+        }
+        if (hasWon) {
+            finalScore = score.score + 100 * lives.lives;
+            alert('Congratulations! You have won! Your final score is ' + finalScore +
+                  '!\nYou can find a list of your previous high scores below.');
+            updateHighScores(finalScore);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -64,9 +92,48 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        hasReset = false;
+        isValid = false;
         lastTime = Date.now();
-        main();
+        initLevel();
+        alert('Welcome to my Frogger-like game. The rules are simple:\n' +
+              '- Use the arrow keys to control the player\n' +
+              '- Avoid the moving bugs - they are the enemy!\n' +
+              '- Collect gems to score points. Your ultimate goal is ' +
+              'the key at the end.\n' +
+              '- Have fun!');
+        showHighScores();
+        if (characterPrompt()) {
+            main();
+        }
+    }
+
+    var isValid = false;
+
+    function characterPrompt() {
+        while (!isValid) {
+            var character = prompt('Welcome! Which character would you like to be? Your ' +
+                                   'options are (please type a letter):\n' +
+                                   'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
+                                   'e. Princess Girl');
+
+            if (!character) {
+                continue;
+            }
+            var characterMap = {
+                'a': 'boy',
+                'b': 'cat-girl',
+                'c': 'horn-girl',
+                'd': 'pink-girl',
+                'e': 'princess-girl'
+            };
+            whichCharacter = characterMap[character.toLowerCase()];
+            if (!whichCharacter) {
+                continue;
+            }
+            player = new Player(whichCharacter);
+            return true;
+        }
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -80,7 +147,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -94,7 +160,36 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+        
+        if (!blueWasCaught) {
+            blue.update('blue');
+        }
+
+        if (whichLevel === 2) {
+            if (!greenWasCaught) {
+                green.update('green');
+            }
+        } else if (whichLevel === 3) {
+            if (!greenWasCaught) {
+                green.update('green');
+            }
+            if (!orangeWasCaught) {
+                orange.update('orange');
+            }
+        } else if (whichLevel === 4) {
+            if (!greenWasCaught) {
+                green.update('green');
+            }
+            if (!orangeWasCaught) {
+                orange.update('orange');
+            }
+            if (!keyWasCaught) {
+                key.update();
+            }
+        }
         player.update();
+        score.update();
+        lives.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -152,15 +247,164 @@ var Engine = (function(global) {
             enemy.render();
         });
 
+        if (!blueWasCaught) {
+            blue.render();
+        }
+
+        if (whichLevel === 2) {
+            if (!greenWasCaught) {
+                green.render();
+            }
+        } else if (whichLevel === 3) {
+            if (!greenWasCaught) {
+                green.render();
+            }
+            if (!orangeWasCaught) {
+                orange.render();
+            }
+        } else if (whichLevel === 4) {
+            if (!greenWasCaught) {
+                green.render();
+            }
+            if (!orangeWasCaught) {
+                orange.render();
+            }
+            if (!keyWasCaught) {
+                key.render();
+            }
+        }
+
         player.render();
+        score.render();
+       // lives.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        // noop
+    function initLevel() {
+        if (whichLevel === 1) {
+            blue = new Gem(whichLevel, 'blue');
+
+            if (doc.getElementById('level-objective') !== null) {
+                levelObjective.innerHTML = '';
+            }
+
+            levelObjective = doc.createElement('div');
+            levelObjective.id = 'level-objective';
+            levelObjective.innerHTML = levelOneHTML;
+
+            doc.body.appendChild(levelObjective);
+        } else if (whichLevel === 2) {
+            blue = new Gem(whichLevel, 'blue');
+            blueWasCaught = false;
+            blueScored = false;
+
+            green = new Gem(whichLevel, 'green');
+            greenWasCaught = false;
+            greenScored = false;
+
+            levelObjective.innerHTML = levelTwoHTML;
+
+            alert('Awesome! You beat level 1! Now how about level 2?');
+        } else if (whichLevel === 3) {
+            blue = new Gem(whichLevel, 'blue');
+            blueWasCaught = false;
+            blueScored = false;
+
+            green = new Gem(whichLevel, 'green');
+            greenWasCaught = false;
+            greenScored = false;
+
+            orange = new Gem(whichLevel, 'orange');
+            orangeWasCaught = false;
+            orangeScored = false;
+
+            levelObjective.innerHTML = levelThreeHTML;
+
+            alert('Sweet! You beat level 2! Up for level 3?');
+        } else if (whichLevel === 4) {
+            blue = new Gem(whichLevel, 'blue');
+            blueWasCaught = false;
+            blueScored = false;
+
+            green = new Gem(whichLevel, 'green');
+            greenWasCaught = false;
+            greenScored = false;
+
+            orange = new Gem(whichLevel, 'orange');
+            orangeWasCaught = false;
+            orangeScored = false;
+
+            key = new Key();
+
+            levelObjective.innerHTML = levelFourHTML;
+
+            alert('Nice! You are a beast! You beat level 3! One more to go...you ready?');
+        }
+    }
+
+    function resetGame() {
+        hasReset = true;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        allEnemies = [];
+        score = new Score();
+        lives = new Lives();
+        hasCollided = false;
+        gameOver = false;
+        hasWon = false;
+        whichCharacter = undefined;
+        finalScore = 0;
+        levelFinished = false;
+        whichLevel = 1;
+        blueWasCaught = false;
+        greenWasCaught = false;
+        orangeWasCaught = false;
+        keyWasCaught = false;
+        blueScored = false;
+        greenScored = false;
+        orangeScored = false;
+        keyScored = false;
+
+        for (var i = 1; i < 4; i++) {
+            for (var j = 0; j < 2; j++) {
+                var newEnemy = new Enemy(-101, i*83 - 41.5);
+                allEnemies.push(newEnemy);
+            }
+        }
+
+        init();
+    }
+
+    function updateHighScores(score) {
+        var highScores = [];
+        if (!localStorage.scores) {
+            highScores.push(score);   
+        } else if (localStorage.scores) {
+            highScores = JSON.parse(localStorage.scores);
+            highScores.push(score);
+        }
+        highScores = highScores.sort(function(a, b) {return a-b;}).reverse();
+        if (highScores.length > 10) {
+            highScores = highScores.slice(0, 10);
+        }
+        localStorage.scores = JSON.stringify(highScores);
+
+        showHighScores();
+    }
+
+    function showHighScores() {
+        if (localStorage.scores) {
+            var highScores = [];
+            highScores = JSON.parse(localStorage.scores);
+
+            var highScoreList = doc.getElementById('high-scores-list');
+            highScoreList.innerHTML = '';
+
+            for (var i = 0; i < highScores.length; i++) {
+                var newScore = highScores[i];
+                var highScoreHTML = doc.createElement('li');
+                highScoreHTML.innerHTML = newScore;
+                highScoreList.appendChild(highScoreHTML);
+            }
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -172,7 +416,16 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
+        'images/Heart.png',
+        'images/Key.png'
     ]);
     Resources.onReady(init);
 
