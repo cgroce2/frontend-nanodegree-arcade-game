@@ -423,7 +423,8 @@ document.addEventListener('keyup', function(e) {
 //HTML to add to screen depending on which level
 var levelOneHTML = '<h2>Level 1</h2>' +
                     '<p>Objective:<br><br>' +
-                    'Capture the blue gem without getting hit by the bugs.</p>';
+                    'Capture the blue gem without getting hit by the bugs.</p>'+
+                    '<button onclick="resetGame()">Click me</button>';    
 
 var levelTwoHTML = '<h2>Level 2</h2>' +
                     '<p>Objective:<br><br>' +
@@ -435,7 +436,9 @@ var levelThreeHTML = '<h2>Level 3</h2>' +
 
 var levelFourHTML =  '<h2>Level 1</h2>' +
                      '<p>Objective:<br><br>' +
-                     'Capture the gems and the key without getting hit by the bugs.</p>';  
+                     'Capture the gems and the key without getting hit by the bugs.</p>';
+
+ 
 
 
 

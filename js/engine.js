@@ -24,18 +24,22 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
-        resetButton = doc.createElement('button'),
+        //resetButton = doc.createElement("BUTTON"),
+        //buttontext = doc.createTextNode("Reset"),
         levelObjective;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-    resetButton.innerHTML = 'Reset';
-    doc.body.appendChild(resetButton);
-    resetButton.onclick = function() {
-        resetGame();
-    };
+    //resetButton.appendChild(buttontext);
+    //doc.body.appendChild(resetButton);
+
+    //resetButton.innerHTML = 'Reset';
+    //doc.body.appendChild(resetButton);
+    //resetButton.addEventListener("click", resetGame);
+
+  
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -372,6 +376,7 @@ var Engine = (function(global) {
 
         init();
     }
+
 
     function updateHighScores(score) {
         var highScores = [];
