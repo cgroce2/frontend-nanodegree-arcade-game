@@ -24,20 +24,20 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
-        //resetButton = doc.createElement("BUTTON"),
-        //buttontext = doc.createTextNode("Reset"),
+        resetButton = doc.createElement("BUTTON"),
+        buttontext = doc.createTextNode("Reset"),
         levelObjective;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-    //resetButton.appendChild(buttontext);
-    //doc.body.appendChild(resetButton);
+    resetButton.appendChild(buttontext);
+    doc.body.appendChild(resetButton);
 
     //resetButton.innerHTML = 'Reset';
     //doc.body.appendChild(resetButton);
-    //resetButton.addEventListener("click", resetGame);
+    resetButton.addEventListener("click", resetGame);
 
   
 

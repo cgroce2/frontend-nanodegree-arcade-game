@@ -19,20 +19,22 @@ button {
 
 #high-scores {
 	position: fixed;
-	bottom: 5%;
-	width: 100%;
-	height: 5vw;
+	right: 5%;
+	top: 25%;
+	width: 10vw;
+	text-align: right;
 }
 
 #high-scores-list {
 	display: flex;
 	flex-wrap: wrap;
 	width: 90%;
-	margin-left: 15%;
+	margin-left: 15px;
 }
 
 #high-scores-list li {
 	width: 15%;
 	text-align: left;
 	padding-left: 25px;
+	padding-right: 25px;
 }
