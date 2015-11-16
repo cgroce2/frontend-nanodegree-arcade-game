@@ -120,6 +120,9 @@ var Engine = (function(global) {
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
                                    'e. Princess Girl');
+            if (character === null || character == "") {
+                return;
+            }
 
             if (!character) {
                 continue;
