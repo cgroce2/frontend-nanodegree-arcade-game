@@ -106,43 +106,53 @@ var Engine = (function(global) {
               '- Collect gems to score points. Your ultimate goal is ' +
               'the key at the end.\n' +
               '- Have fun!', function() {
-                $.alert('Ok Here we go!');
-              });
-        showHighScores();
-        if (characterPrompt()) {
-            main();
-        }
-    }
+                showHighScores();
+                if (characterPrompt()) {
+                    main();
+                }
+            });
+    }    
 
     var isValid = false;
 
-    function characterPrompt() {
+   function characterPrompt() {
         while (!isValid) {
-            var character = prompt('Welcome! Which character would you like to be? Your ' +
+            var character = $.prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-                                   'e. Princess Girl'//, function(answer) {
-                                   //      character.prompt=answer;
-                                   //      if(answer) character.submit();       
-                                    );
-            // if (character === null || character == "") {
-            //     return; //exit function if Cancel clicked in the prompt
-            // }
+                                   'e. Princess Girl', function() {
+                                        if (!character) {
+                                            return true;
+                                        }
+                                        var characterMap = {
+                                            'a': 'boy',
+                                            'b': 'cat-girl',
+                                            'c': 'horn-girl',
+                                            'd': 'pink-girl',
+                                            'e': 'princess-girl'
+                                        };
+                                        whichCharacter = characterMap[character];
+                                        if (!whichCharacter) {
+                                            return true;
+                                        }
+                                        
+                                    });
 
-            if (!character) {
-                continue;
-            }
-            var characterMap = {
-                'a': 'boy',
-                'b': 'cat-girl',
-                'c': 'horn-girl',
-                'd': 'pink-girl',
-                'e': 'princess-girl'
-            };
-            whichCharacter = characterMap[character.toLowerCase()];
-            if (!whichCharacter) {
-                continue;
-            }
+
+            // if (!character) {
+            //     continue;
+            // }
+            // var characterMap = {
+            //     'a': 'boy',
+            //     'b': 'cat-girl',
+            //     'c': 'horn-girl',
+            //     'd': 'pink-girl',
+            //     'e': 'princess-girl'
+            // };
+            // whichCharacter = characterMap[character.toLowerCase()];
+            // if (!whichCharacter) {
+            //     continue;
+            // }
             player = new Player(whichCharacter);
             return true;
         }
