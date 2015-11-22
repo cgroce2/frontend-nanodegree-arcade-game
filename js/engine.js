@@ -100,12 +100,14 @@ var Engine = (function(global) {
         isValid = false;
         lastTime = Date.now();
         initLevel();
-        $.alert('Welcome to my Frogger-like game. The rules are simple:\n' +
+        var welcome = $.alert('Welcome to my Frogger-like game. The rules are simple:\n' +
               '- Use the arrow keys to control the player\n' +
               '- Avoid the moving bugs - they are the enemy!\n' +
               '- Collect gems to score points. Your ultimate goal is ' +
               'the key at the end.\n' +
-              '- Have fun!');
+              '- Have fun!', function() {
+                $.alert('Ok Here we go!');
+              });
         showHighScores();
         if (characterPrompt()) {
             main();
@@ -116,14 +118,13 @@ var Engine = (function(global) {
 
     function characterPrompt() {
         while (!isValid) {
-            var character = $.prompt('Welcome! Which character would you like to be? Your ' +
+            var character = prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-                                   'e. Princess Girl', function(answer) {
-                                        character.prompt=answer;
-                                        if(answer) character.submit();
-                                   });
-
+                                   'e. Princess Girl'//, function(answer) {
+                                   //      character.prompt=answer;
+                                   //      if(answer) character.submit();       
+                                    );
             // if (character === null || character == "") {
             //     return; //exit function if Cancel clicked in the prompt
             // }
