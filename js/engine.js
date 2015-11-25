@@ -109,7 +109,7 @@ var Engine = (function(global) {
                 showHighScores();
                 if (characterPrompt()) {
                     main();
-                }
+                }    
             });
     }    
 
@@ -120,39 +120,22 @@ var Engine = (function(global) {
             var character = $.prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-                                   'e. Princess Girl', function() {
-                                        if (!character) {
-                                            return true;
-                                        }
-                                        var characterMap = {
-                                            'a': 'boy',
-                                            'b': 'cat-girl',
-                                            'c': 'horn-girl',
-                                            'd': 'pink-girl',
-                                            'e': 'princess-girl'
-                                        };
-                                        whichCharacter = characterMap[character];
-                                        if (!whichCharacter) {
-                                            return true;
-                                        }
-                                        
+                                   'e. Princess Girl', function (){
                                     });
-
-
-            // if (!character) {
-            //     continue;
-            // }
-            // var characterMap = {
-            //     'a': 'boy',
-            //     'b': 'cat-girl',
-            //     'c': 'horn-girl',
-            //     'd': 'pink-girl',
-            //     'e': 'princess-girl'
-            // };
-            // whichCharacter = characterMap[character.toLowerCase()];
-            // if (!whichCharacter) {
-            //     continue;
-            // }
+            if (!character) {
+                return true;
+            }
+            var characterMap = {
+                'a': 'boy',
+                'b': 'cat-girl',
+                'c': 'horn-girl',
+                'd': 'pink-girl',
+                'e': 'princess-girl'
+            };
+            whichCharacter = characterMap[character];
+            if (!whichCharacter) {
+                return true;
+            }
             player = new Player(whichCharacter);
             return true;
         }
