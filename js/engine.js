@@ -120,7 +120,6 @@ var Engine = (function(global) {
             var character = $.prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-<<<<<<< HEAD
                                    'e. Princess Girl')
 
             if (!character) {
@@ -133,66 +132,12 @@ var Engine = (function(global) {
                 'd': 'pink-girl',
                 'e': 'princess-girl'
             };
-            whichCharacter = characterMap[character.toLowerCase()];
-            if (!whichCharacter) {
-                continue;
-            }
-||||||| merged common ancestors
-                                   'e. Princess Girl', function() {
-                                        if (!character) {
-                                            return true;
-                                        }
-                                        var characterMap = {
-                                            'a': 'boy',
-                                            'b': 'cat-girl',
-                                            'c': 'horn-girl',
-                                            'd': 'pink-girl',
-                                            'e': 'princess-girl'
-                                        };
-                                        whichCharacter = characterMap[character];
-                                        if (!whichCharacter) {
-                                            return true;
-                                        }
-                                        
-                                    });
-
-
-            // if (!character) {
-            //     continue;
-            // }
-            // var characterMap = {
-            //     'a': 'boy',
-            //     'b': 'cat-girl',
-            //     'c': 'horn-girl',
-            //     'd': 'pink-girl',
-            //     'e': 'princess-girl'
-            // };
-            // whichCharacter = characterMap[character.toLowerCase()];
-            // if (!whichCharacter) {
-            //     continue;
-            // }
-=======
-                                   'e. Princess Girl', function (){
-                                    });
-            if (!character) {
-                return true;
-            }
-            var characterMap = {
-                'a': 'boy',
-                'b': 'cat-girl',
-                'c': 'horn-girl',
-                'd': 'pink-girl',
-                'e': 'princess-girl'
-            };
             whichCharacter = characterMap[character];
             if (!whichCharacter) {
-                return true;
-            }
->>>>>>> be36b04b097bd9972517e55ca19930a395f26023
-            player = new Player(whichCharacter);
             return true;
-        }
-    }
+            };
+        };
+    };
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
