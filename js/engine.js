@@ -1,4 +1,4 @@
-/* Engine.js
+    /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
@@ -120,39 +120,22 @@ var Engine = (function(global) {
             var character = $.prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-                                   'e. Princess Girl', function() {
-                                        if (!character) {
-                                            return true;
-                                        }
-                                        var characterMap = {
-                                            'a': 'boy',
-                                            'b': 'cat-girl',
-                                            'c': 'horn-girl',
-                                            'd': 'pink-girl',
-                                            'e': 'princess-girl'
-                                        };
-                                        whichCharacter = characterMap[character];
-                                        if (!whichCharacter) {
-                                            return true;
-                                        }
-                                        
-                                    });
+                                   'e. Princess Girl')
 
-
-            // if (!character) {
-            //     continue;
-            // }
-            // var characterMap = {
-            //     'a': 'boy',
-            //     'b': 'cat-girl',
-            //     'c': 'horn-girl',
-            //     'd': 'pink-girl',
-            //     'e': 'princess-girl'
-            // };
-            // whichCharacter = characterMap[character.toLowerCase()];
-            // if (!whichCharacter) {
-            //     continue;
-            // }
+            if (!character) {
+                continue;
+            }
+            var characterMap = {
+                'a': 'boy',
+                'b': 'cat-girl',
+                'c': 'horn-girl',
+                'd': 'pink-girl',
+                'e': 'princess-girl'
+            };
+            whichCharacter = characterMap[character.toLowerCase()];
+            if (!whichCharacter) {
+                continue;
+            }
             player = new Player(whichCharacter);
             return true;
         }
