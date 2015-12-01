@@ -180,6 +180,7 @@ Lives.prototype.update = function() {
         gameOver = true;
     }
 };
+
 //Draw lives on canvas
 // Lives.prototype.render = function() {
 //     ctx.drawImage(Resources.get(this.sprite), this.heartX, this.heartY);
@@ -416,7 +417,7 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    //player.handleInput(allowedKeys[e.keyCode]);
+    player.handleInput(allowedKeys[e.keyCode]);
 });
 
 //HTML to add to screen depending on which level
@@ -436,8 +437,9 @@ var levelFourHTML =  '<h2>Level 1</h2>' +
                      '<p>Objective:<br><br>' +
                      'Capture the gems and the key without getting hit by the bugs.</p>';
 
+ 
 
-             
+
 
 
 

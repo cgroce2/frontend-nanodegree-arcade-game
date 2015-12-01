@@ -1,4 +1,4 @@
-    /* Engine.js
+/* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
  * render methods on your player and enemy objects (defined in your app.js).
@@ -100,7 +100,7 @@ var Engine = (function(global) {
         isValid = false;
         lastTime = Date.now();
         initLevel();
-        var welcome = $.alert('Welcome to my Frogger-like game. The rules are simple:\n' +
+        $.alert('Welcome to my Frogger-like game. The rules are simple:\n' +
               '- Use the arrow keys to control the player\n' +
               '- Avoid the moving bugs - they are the enemy!\n' +
               '- Collect gems to score points. Your ultimate goal is ' +
@@ -109,18 +109,25 @@ var Engine = (function(global) {
                 showHighScores();
                 if (characterPrompt()) {
                     main();
-                }    
-            });
-    }    
+                }
+        });        
+    }
 
     var isValid = false;
 
-   function characterPrompt() {
+    function characterPrompt() {
         while (!isValid) {
             var character = $.prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-                                   'e. Princess Girl')
+                                   'e. Princess Girl', function() {
+                                    if (character != "") {
+                                        return;
+                                    }
+                            });
+            // if (character === null || character == "") {
+            //     return;
+            // }
 
             if (!character) {
                 continue;
@@ -132,12 +139,14 @@ var Engine = (function(global) {
                 'd': 'pink-girl',
                 'e': 'princess-girl'
             };
-            whichCharacter = characterMap[character];
+            whichCharacter = characterMap[character.toLowerCase()];
             if (!whichCharacter) {
+                continue;
+            }
+            player = new Player(whichCharacter);
             return true;
-            };
-        };
-    };
+        }
+    }
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
