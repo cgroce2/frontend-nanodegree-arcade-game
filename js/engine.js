@@ -100,34 +100,29 @@ var Engine = (function(global) {
         isValid = false;
         lastTime = Date.now();
         initLevel();
-        $.alert('Welcome to my Frogger-like game. The rules are simple:\n' +
+        alert('Welcome to my Frogger-like game. The rules are simple:\n' +
               '- Use the arrow keys to control the player\n' +
               '- Avoid the moving bugs - they are the enemy!\n' +
               '- Collect gems to score points. Your ultimate goal is ' +
               'the key at the end.\n' +
-              '- Have fun!', function() {
-                showHighScores();
-                if (characterPrompt()) {
+              '- Have fun!')
+               showHighScores();
+               if (characterPrompt()) {
                     main();
-                }
-        });        
+                }      
     }
 
     var isValid = false;
 
     function characterPrompt() {
         while (!isValid) {
-            var character = $.prompt('Welcome! Which character would you like to be? Your ' +
+            var character = prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
                                    'a. Boy\nb. Cat Girl\nc. Horn Girl\nd. Pink Girl\n' +
-                                   'e. Princess Girl', function() {
-                                    if (character != "") {
-                                        return;
-                                    }
-                            });
-            // if (character === null || character == "") {
-            //     return;
-            // }
+                                   'e. Princess Girl')
+            if (character === null || character == "") {
+                return;
+            }
 
             if (!character) {
                 continue;
