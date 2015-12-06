@@ -1,6 +1,11 @@
 Welcome to my Frogger-style game!
+
+How to Play:
+
 The rules are simple.  Use the arrow keys to control the player and avoid the moving bugs, they are the enemy!  Also, don't step in the water!! Collect gems to score points. Your ultimate goal is the key at the end.  
 Have fun!
+
+How to Start Game:
 
 You will need to download the application to a local directory, simply by clicking <a href="https://github.com/cgroce2/frontend-nanodegree-arcade-game/archive/master.zip">this link</a> and unzipping the file.
 
