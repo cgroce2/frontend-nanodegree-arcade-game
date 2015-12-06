@@ -35,8 +35,6 @@ var Engine = (function(global) {
     resetButton.appendChild(buttontext);
     doc.body.appendChild(resetButton);
 
-    //resetButton.innerHTML = 'Reset';
-    //doc.body.appendChild(resetButton);
     resetButton.addEventListener("click", resetGame);
 
   
@@ -115,6 +113,7 @@ var Engine = (function(global) {
     var isValid = false;
 
     function characterPrompt() {
+        "use strict";
         while (!isValid) {
             var character = prompt('Welcome! Which character would you like to be? Your ' +
                                    'options are (please type a letter):\n' +
@@ -164,6 +163,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+        "use strict";
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -209,6 +209,7 @@ var Engine = (function(global) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
+        "use strict"; 
         var rowImages = [
                 'images/water-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
@@ -250,6 +251,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        "use strict"; 
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -287,6 +289,7 @@ var Engine = (function(global) {
     }
 
     function initLevel() {
+        "use strict";
         if (whichLevel === 1) {
             blue = new Gem(whichLevel, 'blue');
 
@@ -349,12 +352,14 @@ var Engine = (function(global) {
     }
 
     function resetGame() {
+        "use strict";
         hasReset = true;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         allEnemies = [];
         score = new Score();
         lives = new Lives();
         hasCollided = false;
+        hasWater = false;
         gameOver = false;
         hasWon = false;
         whichCharacter = undefined;
@@ -372,7 +377,7 @@ var Engine = (function(global) {
 
         for (var i = 1; i < 4; i++) {
             for (var j = 0; j < 2; j++) {
-                var newEnemy = new Enemy(-101, i*83 - 41.5);
+                var newEnemy = new Enemy(sx, i*83 - 41.5);
                 allEnemies.push(newEnemy);
             }
         }
@@ -382,6 +387,7 @@ var Engine = (function(global) {
 
 
     function updateHighScores(score) {
+        "use strict";
         var highScores = [];
         if (!localStorage.scores) {
             highScores.push(score);   

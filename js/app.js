@@ -4,6 +4,7 @@
 
 // Create enemy object
 var Enemy = function(x, y) {
+    "use strict";
     this.x = x;
     this.y = y;
     this.speed = Math.random() * (202 - 50.5) + 50.5;
@@ -12,21 +13,23 @@ var Enemy = function(x, y) {
 };
 
 //Update enemies' position
+var sx = -101; //constant start position variable
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    "use strict";
     var vx = dt * this.speed,
-        width = 505;
+        width = 505;    
 
-    if (this.x === -101) {
+    if (this.x === sx) {
         this.x += vx;
     }   
 
     else {
         this.x += vx;
         if (this.x + vx > width) {
-            this.x = -101;
+            this.x = sx;
         }
     }
 
@@ -38,11 +41,13 @@ Enemy.prototype.update = function(dt) {
 
 //Draw enemies on canvas
 Enemy.prototype.render = function() {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 //Create player object
 var Player = function(character) {
+    "use strict";
     this.x = 202;
     this.y = 373.5;
     this.vx = 101;
@@ -51,9 +56,15 @@ var Player = function(character) {
     this.sprite = 'images/char-' + character + '.png';
 };
 
-//If player has collided with an enemy or collected a gem, reset position
+//If player has collided with an enemy, gone in water or collected a gem, reset position
 Player.prototype.update = function() {
+    "use strict";
     if (hasCollided) {
+        this.x = 202;
+        this.y = 373.5;
+    }
+
+    if (hasWater) {
         this.x = 202;
         this.y = 373.5;
     }
@@ -66,45 +77,49 @@ Player.prototype.update = function() {
 
 //Handle arrow keys to move player
 Player.prototype.handleInput = function(key) {
+    "use strict";
     var height = 606;
 
     if (key == 'left') {
         this.x -= this.vx;
-   }
-   else if (key == 'up') {
+    }
+    else if (key == 'up') {
         this.y -= this.vy;
-   }
-   else if (key == 'right') {
+    }
+    else if (key == 'right') {
     this.x += this.vx;
-   }
-   else if (key == 'down') {
+    }
+    else if (key == 'down') {
     this.y += this.vy;
-   }
+    }
 
-   //Make sure player doesn't move off screen or into water
+   //Detect if player has run into water
+    if (player.y < 41.5) {
+        hasWater = true;
+    }
 
-   if (this.y - this.vy < 41.5) {
-       this.y = 41.5;
-   }
-   if (this.y + this.vy > 373.5) {
-       this.y = 373.5; 
-   }
-   if (this.x - this.vx < 0) {
-       this.x = 0; 
+    //Make sure player doesn't move off screen
+    if (this.y + this.vy > 373.5) {
+        this.y = 373.5; 
+    }
+    if (this.x - this.vx < 0) {
+        this.x = 0
     }   
-   if (this.x + this.vx > 404) {
-       this.x = 404;    
-   }
-};
+    if (this.x + this.vx > 404) {
+        this.x = 404    
+    }
 
+};
 
 //Draw player on canvas
 Player.prototype.render = function() {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 //Create score object
 var Score = function() {
+    "use strict";
     this.x = 12;
     this.y = 93;
     this.score = 0;
@@ -112,6 +127,7 @@ var Score = function() {
 };
 
 Score.prototype.scoreGem = function(value) {
+    "use strict";
     this.score += value;
     this.text = 'Score: ' + this.score.toString();
     scoreChanged = false;
@@ -119,6 +135,7 @@ Score.prototype.scoreGem = function(value) {
 
 //Update score for various conditions
 Score.prototype.update = function() {
+    "use strict";
     if (blueWasCaught && scoreChanged && !blueScored) {
         score.scoreGem(50);
         blueScored = true;
@@ -153,6 +170,7 @@ Score.prototype.update = function() {
 
 //Draw score on Canvas
 Score.prototype.render = function() {
+    "use strict";
     ctx.fillStyle = '#000';
     ctx.font = '20px sans-serif';
     ctx.fillText(this.text, this.x, this.y);
@@ -160,6 +178,7 @@ Score.prototype.render = function() {
 
 //Create lives object
 var Lives = function() {
+    "use strict";
     this.heartX = 412;
     this.textX = 463.5;
     this.heartY = 41.5;
@@ -171,26 +190,26 @@ var Lives = function() {
 
 //Update lives for various conditions
 Lives.prototype.update = function() {
+    "use strict";
     if (hasCollided && this.lives > 0) {
         this.lives -= 1;
         this.text = 'X ' + this.lives.toString();
         hasCollided = false;
+    }
+    if (hasWater && this.lives > 0) {
+        this.lives -= 1;
+        this.text = 'X ' + this.lives.toString();
+        hasWater = false;
     }
     if (this.lives === 0) {
         gameOver = true;
     }
 };
 
-//Draw lives on canvas
-// Lives.prototype.render = function() {
-//     ctx.drawImage(Resources.get(this.sprite), this.heartX, this.heartY);
-//     ctx.fillStyle = '#000';
-//     ctx.font = '20px sans-serif';
-//     ctx.fillText(this.text, this.textX, this.y);
-// };
 
 //Create gem object
 var Gem = function(level, color) {
+    "use strict";
     var possibleX = [0, 101, 202, 303, 404];
 
     if (color === 'blue') {
@@ -323,6 +342,7 @@ var Gem = function(level, color) {
 
 //Detect if a gem has been collected by player
 Gem.prototype.update = function(color) {
+    "use strict";
     if (player.x === this.x && player.y === this.y) {
         if (color === 'blue') {
             blueWasCaught = true;
@@ -340,11 +360,13 @@ Gem.prototype.update = function(color) {
 
 //Draw gem on canvas
 Gem.prototype.render = function() {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 //Create key object
 var Key = function() {
+    "use strict";
     this.x = 202;
     this.y = 41.5;
 
@@ -353,6 +375,7 @@ var Key = function() {
 
 //Detect if player has collected key
 Key.prototype.update = function() {
+    "use strict";
     if (player.x === this.x && player.y === this.y) {
         keyWasCaught = true;
         scoreChanged = true;
@@ -361,6 +384,7 @@ Key.prototype.update = function() {
 
 //Draw key on canvas
 Key.prototype.render = function() {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 /*
@@ -370,6 +394,7 @@ Key.prototype.render = function() {
 */
 
 var hasCollided = false, //if player has collided with enemy
+    hasWater = false, //if player runs into water
     gameOver = false,
     hasWon = false,
     whichCharacter, //Which character the user chooses
@@ -403,13 +428,14 @@ var player,
 
 for (var i = 1; i < 4; i++) {
     for (var j = 0; j < 2; j++) {
-        var newEnemy = new Enemy(-101, i*83 - 41.5);
+        var newEnemy = new Enemy(sx, i*83 - 41.5);
         allEnemies.push(newEnemy);
     }
 }
 
 //Add listener for key input to move player
 document.addEventListener('keyup', function(e) {
+    "use strict";
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -438,35 +464,3 @@ var levelFourHTML =  '<h2>Level 1</h2>' +
                      'Capture the gems and the key without getting hit by the bugs.</p>';
 
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-// document.addEventListener('keyup', function(e) {
-//     var allowedKeys = {
-//         37: 'left',
-//         38: 'up',
-//         39: 'right',
-//         40: 'down'
-//     };
-
-//     player.handleInput(allowedKeys[e.keyCode]);
-// });
