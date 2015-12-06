@@ -94,7 +94,7 @@ Player.prototype.handleInput = function(key) {
     }
 
    //Detect if player has run into water
-    if (player.y < 41.5) {
+    if (this.y < 41.5) {
         hasWater = true;
     }
 
@@ -462,5 +462,4 @@ var levelThreeHTML = '<h2>Level 3</h2>' +
 var levelFourHTML =  '<h2>Level 1</h2>' +
                      '<p>Objective:<br><br>' +
                      'Capture the gems and the key without getting hit by the bugs.</p>';
-
  
